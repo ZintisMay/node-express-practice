@@ -1,0 +1,15 @@
+{
+  "name": "express-practice",
+  "version": "1.0.0",
+  "description": "practice",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "author": "Zintis",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
