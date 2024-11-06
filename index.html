@@ -5,13 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
+  <link rel="stylesheet" href="index.css" />
   <body>
-    <button id="target">Click me</button>
+    <label for="userInput">User</label>
+    <input type="text" id="userInput" /><br />
+    <label for="textInput">Message</label>
+    <input type="text" id="textInput" />
+    <div id="chat"></div>
   </body>
   <script>
-    let target = document.getElementById("target");
-    target.addEventListener("click", function () {
-      alert("NOTHING");
+    const userInput = document.getElementById("userInput");
+    const textInput = document.getElementById("textInput");
+    const chat = document.getElementById("chat");
+
+    // on page load
+    setInterval(() => {
+      fetch("/messages", {
+        method: "GET",
+      })
+        .then((res) => res.json())
+        .then((jsonData) => {
+          console.log(jsonData);
+          displayChatLog(jsonData);
+        });
+    }, 1000);
+
+    // event listeners
+    textInput.addEventListener("keydown", function (e) {
+      console.log(e.key);
+      if (e.key === "Enter") {
+        let text = e.target.value;
+        let user = userInput.value;
+        if (!user || !text) return;
+        console.log(user, text);
+        textInput.value = "";
+
+        fetch("/messages", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ user, text }),
+        })
+          .then((res) => res.json())
+          .then((jsonData) => {
+            console.log(jsonData);
+            displayChatLog(jsonData);
+          });
+      }
     });
+
+    function displayChatLog(chatLog) {
+      let html = "";
+
+      for (let message of chatLog) {
+        let user = message.user;
+        let text = message.text;
+
+        html += `
+          <p><strong>${user}</strong>: ${text}<p>
+        `;
+      }
+
+      chat.innerHTML = html;
+    }
   </script>
+  <!-- <script src="index.js"></script> -->
 </html>

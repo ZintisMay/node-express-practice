@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "node server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "test2": "echo zintis"
   },
   "author": "Zintis",
   "license": "ISC",
